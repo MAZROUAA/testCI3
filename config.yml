@@ -1,39 +1,23 @@
 version: 2.1
-+
 
-orbs:
-  browser-tools: circleci/browser-tools@1.4.0
-
+# Orchestrate or schedule a set of jobs
 jobs:
-  build:
+  print_hello_world:
     docker:
-      - image: cimg/openjdk:17.0.1
+      - image: circleci/node:13.8.0
     steps:
-      - checkout
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
-      - run:
-          google-chrome --version
-          chromedriver --version
-      - run: mvn dependency:go-offline # gets the project dependencies 
-      - run: mvn package -Dmaven.test.skip=true
-  test : 
+      - run: echo helloworld
+  print_MyName:
     docker:
-      - image: cimg/openjdk:17.0.1
+      - image: circleci/node:13.8.0
     steps:
-      - checkout
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
-      - run:
-          google-chrome --version
-          chromedriver --version
-      - run: mvn dependency:go-offline # gets the project dependencies 
-      - run: mvn test
-
+      - run: echo mazrouaa
 workflows:
-  buildmvn:
+  # Name the workflow "welcome"
+  welcome:
+    # Run the welcome/run job in its own container
     jobs:
-      - build
-      - test:
-          requires : 
-              - build
+      - print_hello_world
+      - print_MyName:
+          requires:
+            - print_hello_world
